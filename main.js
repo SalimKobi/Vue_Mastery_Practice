@@ -1,9 +1,9 @@
-Vue.component('product',{
+Vue.component('product', {
     props: {
-        premium:{
+        premium: {
             type: Boolean,
             required: true
-        } 
+        }
     },
     template: `
     <div class="product">
@@ -43,7 +43,7 @@ Vue.component('product',{
     <product-review><product-review>
   </div>
     `,
-    data(){
+    data() {
         return {
             brand: "Vue Mastery",
             product: "Socks",
@@ -61,7 +61,7 @@ Vue.component('product',{
                     variantColor: "blue",
                     variantImage: './assets/vmSocks-blue-onWhite.jpeg',
                     variantQuantity: 0
-    
+
                 }, {
                     variantId: 2236,
                     variantColor: "purple",
@@ -69,7 +69,7 @@ Vue.component('product',{
                 }
             ],
         }
-    }, 
+    },
     methods: {
         addToCart() {
             this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId)
@@ -83,14 +83,14 @@ Vue.component('product',{
         title() {
             return this.brand + ' ' + this.product
         },
-        image(){
+        image() {
             return this.variants[this.selectedVariant].variantImage
         },
-        inStock(){
+        inStock() {
             return this.variants[this.selectedVariant].variantQuantity
         },
-        shipping(){
-            if (this.premium){
+        shipping() {
+            if (this.premium) {
                 return "Free"
             }
             return 2.99
@@ -102,7 +102,7 @@ Vue.component('product',{
 
 Vue.component('product-review', {
     template: `
-        <form class="review-form">
+        <form class="review-form" @submit.prevent="onSubmit">
 
         <p>
             <label for="name">Name:</label>
@@ -124,12 +124,30 @@ Vue.component('product-review', {
                 <option>1</option>
             </select>
         </p>
+
+        <p>
+            <input type="submit" value="Submit">
+        </p>
+
+
     `,
-    data(){
+    data() {
         return {
             name: null,
             review: null,
             rating: null
+        }
+    },
+    methods: {
+        onSubmit() {
+            let productReview = {
+                name: this.name,
+                review: this.review,
+                rating: this.rating
+            }
+            this.name = null
+            this.review = null
+            this.rating = null
         }
     }
 })
@@ -140,10 +158,10 @@ var app = new Vue({
         premium: true,
         cart: []
     },
-    methods:{
-        updateCart(id){
+    methods: {
+        updateCart(id) {
             this.cart.push(id)
         }
     }
-    
+
 })
