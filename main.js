@@ -37,10 +37,10 @@ Vue.component('product',{
       >
         Add to cart
       </button>
-      <div class="cart">
-        <p>Cart({{cart}})</p>
-      </div>
+      
     </div>
+
+    <product-review><product-review>
   </div>
     `,
     data(){
@@ -68,12 +68,11 @@ Vue.component('product',{
                     variantQuantity: 5
                 }
             ],
-            cart: 0
         }
     }, 
     methods: {
         addToCart() {
-            this.cart += 1
+            this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId)
         },
         updateProduct: function (index) {
             this.selectedVariant = index
@@ -101,10 +100,50 @@ Vue.component('product',{
 })
 
 
+Vue.component('product-review', {
+    template: `
+        <form class="review-form">
+
+        <p>
+            <label for="name">Name:</label>
+            <input id="name" v-model="name" placeholder="name" >
+        </p>
+
+        <p>
+            <label for="review">Review:</label>
+            <textarea id="review" v-model="review"></textarea>
+        </p>
+
+        <p> 
+            <label for="rating">Rating:</label>
+            <select id="rating" v-model.number    ="rating">
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+            </select>
+        </p>
+    `,
+    data(){
+        return {
+            name: null,
+            review: null,
+            rating: null
+        }
+    }
+})
+
 var app = new Vue({
     el: '#app',
     data: {
-        premium: true
+        premium: true,
+        cart: []
+    },
+    methods:{
+        updateCart(id){
+            this.cart.push(id)
+        }
     }
     
 })
